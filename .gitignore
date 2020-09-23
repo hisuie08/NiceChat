@@ -1,0 +1,8 @@
+.gradle
+.idea
+build
+logs
+out
+run
+src/test
+README.txt
