@@ -1,7 +1,10 @@
 package com.hisuie08.nicechat;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.NewChatGui;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.event.ServerChatEvent;
+import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -10,10 +13,12 @@ import net.minecraftforge.fml.common.Mod;
 public class NiceChatEvent {
     @SubscribeEvent
     public void onClientChat(ClientChatEvent event){
+        event.setCanceled(true);
         NiceChat.LOGGER.info("Client: "+ event.getMessage());
     }
     @SubscribeEvent
     public void onServerChat(ServerChatEvent event){
-        event.setResult(Event.Result.DENY);
+        event.setCanceled(true);
+        event.setResult(Event.Result.ALLOW);
     }
 }
