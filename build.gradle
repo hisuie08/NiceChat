@@ -86,7 +86,7 @@ minecraft {
     }
 }
 repositories {
-    maven {url = "https://jcenter.bintray.com/"}
+    jcenter()
     maven {url = "https://maven.fabricmc.net/"}
     flatDir {
         dirs "lib"
@@ -108,8 +108,6 @@ dependencies {
     // compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
     // compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
     // https://mvnrepository.com/artifact/me.shedaniel.cloth/cloth-config-forge
-    compile group: 'me.shedaniel.cloth', name: 'cloth-config-forge', version: '4.1.0'
-
 
     // The 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
     // provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
