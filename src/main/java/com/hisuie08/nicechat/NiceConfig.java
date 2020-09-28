@@ -1,9 +1,7 @@
 package com.hisuie08.nicechat;
 
-import net.minecraft.util.datafix.fixes.PlayerUUID;
 import net.minecraftforge.fml.loading.FMLPaths;
 
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
