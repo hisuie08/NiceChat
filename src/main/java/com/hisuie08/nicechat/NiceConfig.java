@@ -2,49 +2,39 @@ package com.hisuie08.nicechat;
 
 import net.minecraftforge.fml.loading.FMLPaths;
 
-import java.io.*;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class NiceConfig {
-    public static File NiceConfigDir = new File(FMLPaths.CONFIGDIR.get().toFile(),"NiceChat");
-    public static File ignoreWordsFile = new File(NiceConfigDir,"/ignoreContents.txt");
-    public static File ignoreUUIDFile = new File(NiceConfigDir, "/ignoreUUID.txt");
-    public static List<String> ignoreContentsList = new ArrayList<>();
-    public static List<String> ignoreUUIDList = new ArrayList<>();
+    public static Path NICE_CONFIG_DIR = FMLPaths.CONFIGDIR.get().resolve("NiceChat");
+    public static Path IGNORE_WORDS_FILE = NICE_CONFIG_DIR.resolve("ignoreContents.txt");
+    public static Path IGNORE_UUIDS_FILE = NICE_CONFIG_DIR.resolve("ignoreUUID.txt");
 
-    public static void Init() throws IOException {
-        if(!NiceConfigDir.exists()){
-            NiceConfigDir.mkdirs();
-            NiceChat.LOGGER.info(NiceConfigDir);
+    public static void init() throws IOException {
+        if(Files.notExists(NICE_CONFIG_DIR)){
+            Files.createDirectories(NICE_CONFIG_DIR);
+            NiceChat.LOGGER.debug(NICE_CONFIG_DIR);
         }
-        if(!ignoreWordsFile.exists()){
-            ignoreWordsFile.createNewFile();
+        if(Files.notExists(IGNORE_WORDS_FILE)){
+            Files.createFile(IGNORE_WORDS_FILE);
         }
-        if(!ignoreUUIDFile.exists()){
-            ignoreUUIDFile.createNewFile();
+        if(Files.notExists(IGNORE_UUIDS_FILE)){
+            Files.createFile(IGNORE_UUIDS_FILE);
         }
     }
-    public static List<String> loadContent() throws FileNotFoundException {
-        try (BufferedReader br = new BufferedReader(new FileReader(ignoreWordsFile))) {
-            String text;
-            while ((text = br.readLine()) != null) {
-                ignoreContentsList.add(text);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return ignoreContentsList;
+
+    public List<String> loadContent() throws IOException {
+        return Files.readAllLines(IGNORE_WORDS_FILE);
     }
-    public static List<String> loadUUID() throws FileNotFoundException {
-        try (BufferedReader br = new BufferedReader(new FileReader(ignoreUUIDFile))) {
-            String text;
-            while ((text = br.readLine()) != null) {
-                ignoreUUIDList.add(text);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return ignoreUUIDList;
+
+    public List<UUID> loadUUIDs() throws IOException {
+        return Files.readAllLines(IGNORE_UUIDS_FILE)
+                .stream()
+                .map(UUID::fromString)
+                .collect(Collectors.toList());
     }
 }

@@ -12,64 +12,74 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.List;
 
-@Mod(NiceChat.MODID)
+import javax.annotation.Nullable;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+@Mod(NiceChat.MOD_ID)
 public class NiceChat
 {
-    public static final String MODID = "nicechat";
+    public static final String MOD_ID = "nicechat";
     public static final Logger LOGGER = LogManager.getLogger();
-    public static String messageInsteadOfHide = I18n.format("message.nicechat.hidecontents");
+    public static String MESSAGE_INSTEAD_OF_HIDE = I18n.format("message.nicechat.hidecontents");
 
     public NiceChat() throws IOException {
         MinecraftForge.EVENT_BUS.register(this);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onSideSetup);
-        NiceConfig.Init();
-        LOGGER.info(new TranslationTextComponent(messageInsteadOfHide));
     }
     public void onSideSetup(final FMLClientSetupEvent event){
+        try {
+            NiceConfig.init();
+        } catch (IOException ex) {
+            LOGGER.error("Errors occurred in creating new config files", ex);
+        }
+        config = new NiceConfig();
+        loadConfig();
     }
 
     @SubscribeEvent
-    public void onChatReceived(ClientChatReceivedEvent event) throws FileNotFoundException {
+    public void onChatReceived(ClientChatReceivedEvent event) {
         if(event.getType() == ChatType.CHAT){
-            if(catchSenderFilter(event.getSenderUUID().toString())) {
-                event.setMessage(new TranslationTextComponent(messageInsteadOfHide));
-                return;
+            if(catchSenderFilter(event.getSenderUUID())) {
+                event.setMessage(new TranslationTextComponent(MESSAGE_INSTEAD_OF_HIDE));
             }
             else if (catchContentFilter(event.getMessage().getString())){
-                event.setMessage(new TranslationTextComponent(messageInsteadOfHide));
-                return;
+                event.setMessage(new TranslationTextComponent(MESSAGE_INSTEAD_OF_HIDE));
             }
-
         }
     }
-    private boolean catchSenderFilter(String sender) throws FileNotFoundException {
-        List<String> ignoreUUIDList =new NiceConfig().loadUUID();
-        LOGGER.info(ignoreUUIDList);
-        boolean flag = false;
-        for (String u: ignoreUUIDList){
-            if(sender.equals(u)) {
-                flag = true;
-                break;
-            }
-        }
-        return flag;
 
-    }
-    private boolean catchContentFilter(String chat) throws FileNotFoundException {
-        List<String> ignoreContentsList = new NiceConfig().loadContent();
-        LOGGER.info(ignoreContentsList);
-        boolean flag = false;
-        for (String s: ignoreContentsList){
-            if(chat.matches(s)) {
-                flag = true;
-                break;
-            }
+    private NiceConfig config;
+
+    private final List<String> ignoreContents = new ArrayList<>();
+    private final List<UUID> ignoreUUIDs = new ArrayList<>();
+
+    private void loadConfig() {
+        try {
+            ignoreContents.clear();
+            ignoreContents.addAll(config.loadContent());
+        }catch (IOException ex) {
+            LOGGER.error("Could not load ignore contents");
         }
-        return flag;
+        try {
+            ignoreUUIDs.clear();
+            ignoreUUIDs.addAll(config.loadUUIDs());
+        }catch (IOException ex) {
+            LOGGER.error("Could not load ignore UUIDs.");
+        }
+    }
+
+    private boolean catchSenderFilter(@Nullable UUID sender) {
+        if(sender == null) return false;
+        return ignoreUUIDs.stream()
+                .anyMatch(sender::equals);
+    }
+    private boolean catchContentFilter(String chat) {
+        return ignoreContents.stream()
+                .anyMatch(chat::matches);
     }
 
 
