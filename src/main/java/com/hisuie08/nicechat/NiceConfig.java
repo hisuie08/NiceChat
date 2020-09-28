@@ -7,26 +7,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NiceConfig {
-    public static File NiceConfigDir = new File(FMLPaths.CONFIGDIR.get().toFile(),"NiceChat");
-    public static File ignoreWordsFile = new File(NiceConfigDir,"/ignoreContents.txt");
-    public static File ignoreUUIDFile = new File(NiceConfigDir, "/ignoreUUID.txt");
+    public static File NICE_CONFIG_DIR = new File(FMLPaths.CONFIGDIR.get().toFile(),"NiceChat");
+    public static File IGNORE_WORDS_FILE = new File(NICE_CONFIG_DIR,"/ignoreContents.txt");
+    public static File IGNORE_UUIDS_FILE = new File(NICE_CONFIG_DIR, "/ignoreUUID.txt");
     public static List<String> ignoreContentsList = new ArrayList<>();
     public static List<String> ignoreUUIDList = new ArrayList<>();
 
     public static void init() throws IOException {
-        if(!NiceConfigDir.exists()){
-            NiceConfigDir.mkdirs();
-            NiceChat.LOGGER.info(NiceConfigDir);
+        if(!NICE_CONFIG_DIR.exists()){
+            NICE_CONFIG_DIR.mkdirs();
+            NiceChat.LOGGER.info(NICE_CONFIG_DIR);
         }
-        if(!ignoreWordsFile.exists()){
-            ignoreWordsFile.createNewFile();
+        if(!IGNORE_WORDS_FILE.exists()){
+            IGNORE_WORDS_FILE.createNewFile();
         }
-        if(!ignoreUUIDFile.exists()){
-            ignoreUUIDFile.createNewFile();
+        if(!IGNORE_UUIDS_FILE.exists()){
+            IGNORE_UUIDS_FILE.createNewFile();
         }
     }
     public static List<String> loadContent() throws FileNotFoundException {
-        try (BufferedReader br = new BufferedReader(new FileReader(ignoreWordsFile))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(IGNORE_WORDS_FILE))) {
             String text;
             while ((text = br.readLine()) != null) {
                 ignoreContentsList.add(text);
@@ -37,7 +37,7 @@ public class NiceConfig {
         return ignoreContentsList;
     }
     public static List<String> loadUUID() throws FileNotFoundException {
-        try (BufferedReader br = new BufferedReader(new FileReader(ignoreUUIDFile))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(IGNORE_UUIDS_FILE))) {
             String text;
             while ((text = br.readLine()) != null) {
                 ignoreUUIDList.add(text);

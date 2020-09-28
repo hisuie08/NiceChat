@@ -16,18 +16,18 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
-@Mod(NiceChat.MODID)
+@Mod(NiceChat.MOD_ID)
 public class NiceChat
 {
-    public static final String MODID = "nicechat";
+    public static final String MOD_ID = "nicechat";
     public static final Logger LOGGER = LogManager.getLogger();
-    public static String messageInsteadOfHide = I18n.format("message.nicechat.hidecontents");
+    public static String MESSAGE_INSTEAD_OF_HIDE = I18n.format("message.nicechat.hidecontents");
 
     public NiceChat() throws IOException {
         MinecraftForge.EVENT_BUS.register(this);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onSideSetup);
         NiceConfig.init();
-        LOGGER.info(new TranslationTextComponent(messageInsteadOfHide));
+        LOGGER.info(new TranslationTextComponent(MESSAGE_INSTEAD_OF_HIDE));
     }
     public void onSideSetup(final FMLClientSetupEvent event){
     }
@@ -36,11 +36,11 @@ public class NiceChat
     public void onChatReceived(ClientChatReceivedEvent event) throws FileNotFoundException {
         if(event.getType() == ChatType.CHAT){
             if(catchSenderFilter(event.getSenderUUID().toString())) {
-                event.setMessage(new TranslationTextComponent(messageInsteadOfHide));
+                event.setMessage(new TranslationTextComponent(MESSAGE_INSTEAD_OF_HIDE));
                 return;
             }
             else if (catchContentFilter(event.getMessage().getString())){
-                event.setMessage(new TranslationTextComponent(messageInsteadOfHide));
+                event.setMessage(new TranslationTextComponent(MESSAGE_INSTEAD_OF_HIDE));
                 return;
             }
 
