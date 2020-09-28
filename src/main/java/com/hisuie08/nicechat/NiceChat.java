@@ -26,7 +26,7 @@ public class NiceChat
     public NiceChat() throws IOException {
         MinecraftForge.EVENT_BUS.register(this);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onSideSetup);
-        NiceConfig.Init();
+        NiceConfig.init();
         LOGGER.info(new TranslationTextComponent(messageInsteadOfHide));
     }
     public void onSideSetup(final FMLClientSetupEvent event){

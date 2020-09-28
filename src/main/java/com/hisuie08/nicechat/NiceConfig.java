@@ -13,7 +13,7 @@ public class NiceConfig {
     public static List<String> ignoreContentsList = new ArrayList<>();
     public static List<String> ignoreUUIDList = new ArrayList<>();
 
-    public static void Init() throws IOException {
+    public static void init() throws IOException {
         if(!NiceConfigDir.exists()){
             NiceConfigDir.mkdirs();
             NiceChat.LOGGER.info(NiceConfigDir);
