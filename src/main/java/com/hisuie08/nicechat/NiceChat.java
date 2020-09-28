@@ -29,10 +29,14 @@ public class NiceChat
     public NiceChat() throws IOException {
         MinecraftForge.EVENT_BUS.register(this);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onSideSetup);
-
-        NiceConfig.init();
     }
     public void onSideSetup(final FMLClientSetupEvent event){
+        try {
+            NiceConfig.init();
+        } catch (IOException ex) {
+            LOGGER.error("Errors occurred in creating new config files", ex);
+        }
+        config = new NiceConfig();
         loadConfig();
     }
 
