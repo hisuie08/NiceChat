@@ -33,6 +33,7 @@ config/
 ignoreContents.txtに単語を設定したいときは、**必ず先頭に`.*`をつけて！**
 <details>
 <summary>ちょっと難しい説明</summary>
+
 `ignoreContext.txt`に書かれたパターンで捜査する対象のチャットメッセージは、
 ```
 <ユーザーネーム> チャットメッセージ
