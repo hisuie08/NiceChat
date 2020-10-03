@@ -1,3 +1,6 @@
 {
-  "message.nicechat.hidecontents": "鳥がどこかで鳴いている"
+  "message.nicechat.hidecontents": "鳥がどこかで鳴いている",
+  "key.categories.nicechat": "NiceChat",
+  "key.nicechat.config.reload": "Configの再読み込み",
+  "message.nicechat.reload": "Configがリロードされました！"
 }

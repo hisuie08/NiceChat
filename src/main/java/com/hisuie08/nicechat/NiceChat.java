@@ -5,6 +5,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,6 +25,11 @@ public class NiceChat
 {
     public static final String MOD_ID = "nicechat";
     public static final Logger LOGGER = LogManager.getLogger();
+    public static final String MESSAGE_INSTEAD_OF_HIDE = I18n.format("message.nicechat.hidecontents");
+    public static final String CATEGORY_CONFIG_NICECHAT = I18n.format("key.categories.nicechat");
+    public static final String LOAD_CONFIG = I18n.format("key.nicechat.config.reload");
+    public static final String MESSAGE_LOAD_SUCCESSFUL = I18n.format("message.nicechat.reload");
+    public static KeyBinding CONFIG_KEY = new KeyBinding(LOAD_CONFIG,78,CATEGORY_CONFIG_NICECHAT);
     public static String MESSAGE_INSTEAD_OF_HIDE = I18n.format("message.nicechat.hidecontents");
 
     public NiceChat() throws IOException {
@@ -40,6 +46,13 @@ public class NiceChat
         loadConfig();
     }
 
+    @SubscribeEvent
+    public void onConfigKey(InputEvent.KeyInputEvent event){
+        if (event.getKey() == CONFIG_KEY.getKey().getKeyCode() && event.getAction() == 1){
+            loadConfig();
+            Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(new TranslationTextComponent(MESSAGE_LOAD_SUCCESSFUL));
+        }
+    }
     @SubscribeEvent
     public void onChatReceived(ClientChatReceivedEvent event) {
         if(event.getType() == ChatType.CHAT){
