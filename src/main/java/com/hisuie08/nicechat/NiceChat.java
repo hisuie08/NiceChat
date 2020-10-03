@@ -52,8 +52,7 @@ public class NiceChat
 
     @SubscribeEvent
     public void onConfigKey(InputEvent.KeyInputEvent event){
-        LOGGER.info(event.getKey());
-        if (event.getKey() == CONFIG_KEY.getKey().getKeyCode()){
+        if (event.getKey() == CONFIG_KEY.getKey().getKeyCode() && event.getAction() == 1){
             loadConfig();
             Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(new TranslationTextComponent(MESSAGE_LOAD_SUCCESSFUL));
         }
