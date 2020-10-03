@@ -1,15 +1,21 @@
 package com.hisuie08.nicechat;
 
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
+import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.settings.KeyBindingMap;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,6 +31,7 @@ public class NiceChat
     public static final String MOD_ID = "nicechat";
     public static final Logger LOGGER = LogManager.getLogger();
     public static String MESSAGE_INSTEAD_OF_HIDE = I18n.format("message.nicechat.hidecontents");
+    public static KeyBinding CONFIG_KEY = new KeyBinding("load_config",78,"key.categories.gameplay");
 
     public NiceChat() throws IOException {
         MinecraftForge.EVENT_BUS.register(this);
@@ -38,8 +45,17 @@ public class NiceChat
         }
         config = new NiceConfig();
         loadConfig();
+        Minecraft.getInstance().gameSettings.keyBindings = ArrayUtils.add(Minecraft.getInstance().gameSettings.keyBindings
+                , CONFIG_KEY);
     }
 
+    @SubscribeEvent
+    public void onConfigKey(InputEvent.KeyInputEvent event){
+        LOGGER.info(event.getKey());
+        if (event.getKey() == CONFIG_KEY.getKey().getKeyCode()){
+
+        }
+    }
     @SubscribeEvent
     public void onChatReceived(ClientChatReceivedEvent event) {
         if(event.getType() == ChatType.CHAT){
