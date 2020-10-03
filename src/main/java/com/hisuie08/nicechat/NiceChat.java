@@ -1,9 +1,7 @@
 package com.hisuie08.nicechat;
 
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
@@ -13,7 +11,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,6 +30,7 @@ public class NiceChat
     public static final String LOAD_CONFIG = I18n.format("key.nicechat.config.reload");
     public static final String MESSAGE_LOAD_SUCCESSFUL = I18n.format("message.nicechat.reload");
     public static KeyBinding CONFIG_KEY = new KeyBinding(LOAD_CONFIG,78,CATEGORY_CONFIG_NICECHAT);
+    public static String MESSAGE_INSTEAD_OF_HIDE = I18n.format("message.nicechat.hidecontents");
 
     public NiceChat() throws IOException {
         MinecraftForge.EVENT_BUS.register(this);
@@ -46,8 +44,6 @@ public class NiceChat
         }
         config = new NiceConfig();
         loadConfig();
-        Minecraft.getInstance().gameSettings.keyBindings = ArrayUtils.add(Minecraft.getInstance().gameSettings.keyBindings
-                , CONFIG_KEY);
     }
 
     @SubscribeEvent
