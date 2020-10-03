@@ -1,3 +1,6 @@
 {
-  "message.nicechat.hidecontents": "Birds are Singing at somewhere"
+  "message.nicechat.hidecontents": "Birds are Singing at somewhere",
+  "key.categories.nicechat": "NiceChat",
+  "key.nicechat.config.reload": "Reload Config",
+  "message.nicechat.reload": "Configs are Reloaded!"
 }
